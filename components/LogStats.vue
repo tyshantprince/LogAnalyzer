@@ -30,14 +30,10 @@ export default {
       name: 'main', // Use socket "home"
     })
 
-  this.socket.on('runupdate', () => {
-    console.log('fetchdata')
-      this.socket.emit('fetchData')
+  this.socket.on('runupdate', (data) => {
+    this.statistics = data;
     });
 
-    this.socket.on('updateStats', (data) => {
-      this.statistics = data;
-    });
   },  
   methods: {
   }

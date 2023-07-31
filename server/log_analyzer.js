@@ -1,69 +1,63 @@
-const fs = require('fs');
-const readline = require('readline');
-const { EventEmitter } = require('events');
-const io = require('socket.io-client');
+const fs = require('fs-extra');
 
-const filePath = 'logs.txt';
-
-const stats = {
-  records: 0,
-  types: {},
-  avgProcessingSpeed: 0,
-  maxWords: { message: '', wordCount: 0 },
-};
-
-const eventEmitter = new EventEmitter();
-
-function processLogLine(line) {
-  const [date, type, ...messageArray] = line.split(' ');
-    const words = messageArray.length;
-    const message = messageArray.join(' ');
+// Function to analyze log data
+async function analyzeLog(filePath) {
+  try {
+    // Read the log file asynchronously
+    const startTime = Date.now();
+    const logData = await fs.readFile(filePath, 'utf-8');
 
 
-  // Update statistics
-  stats.records++;
-  stats.types[type] = (stats.types[type] || 0) + 1;
+    // Step 1: Parse the log data and create a data structure for analysis
+    const logLines = logData.split('\n').filter((line) => line.trim() !== '');
+    const logRecords = logLines.map((line) => {
+      const [timestamp, messageType, ...messageArray] = line.split(' ');
+      const wordCount = messageArray.length;
+      const message = messageArray.join(' ');
+      const processingSpeed = (Date.now() - startTime) / 60000
+      return { timestamp, messageType, processingSpeed, wordCount, message };
+    });
 
+    // Step 2: Calculate statistics
+    const records = logRecords.length;
 
-  // Check and update Max word reference
-  if (words > stats.maxWords.wordCount) {
-    stats.maxWords.message = message;
-    stats.maxWords.wordCount = words;
+    // Create an object to store the count of each message type
+    const types = {};
+    logRecords.forEach((record) => {
+      const { messageType } = record;
+      if (types[messageType]) {
+        types[messageType]++;
+      } else {
+        types[messageType] = 1;
+      }
+    });
+
+    // Calculate the average processing speed per minute
+    const totalProcessingSpeed = logRecords.reduce((sum, record) => sum + record.processingSpeed, 0);
+    const avgProcessingSpeed = totalProcessingSpeed / records;
+
+    // Find the record with the most words
+    const maxWords = logRecords.reduce((prevRecord, currentRecord) => {
+      var max = currentRecord.wordCount > prevRecord.wordCount ? currentRecord : prevRecord;
+      return {
+        message: max.message,
+        wordCount: max.wordCount
+      }
+    });
+
+    // Step 3: Prepare the final result object
+    const result = {
+      records,
+      types,
+      avgProcessingSpeed,
+      maxWords,
+    };
+
+    return result;
+  } catch (error) {
+    console.error('Error reading or analyzing log file:', error);
+    return null;
   }
-
-  // Calculate average processing speed per minute
-  const processingSpeed = stats.records / ((Date.now() - startTime) / 60000);
-  stats.avgProcessingSpeed = processingSpeed.toFixed(2);
 }
 
-
-let getter = function getStats(){
-  if(stats.records == 0){
-    processLogFile()
-  }
-  return stats;
-}
-
-let run = function runProcess(){
-    processLogFile()
- 
-}
-
-function processLogFile() {
-  const fileStream = fs.createReadStream(filePath);
-
-  
-  const rl = readline.createInterface({ input: fileStream, crlfDelay: Infinity });
-
-  rl.on('line', (line) => {
-    processLogLine(line);
-  });
-
-  rl.on('close', () => {
-  });
-}
-
-// Start processing the log file
-const startTime = Date.now(); // For calculating processing speed
-
-module.exports = { eventEmitter, getter, run };
+export default analyzeLog;

@@ -1,7 +1,7 @@
 import socketIO, { Server } from 'socket.io'
 import http from 'http';
 import cors from 'cors'; // Import the cors middleware
-import { getter, run } from '../server/log_analyzer'
+import analyzeLog from '../server/log_analyzer'
 
 
 import { CronJob } from "cron";
@@ -31,20 +31,15 @@ io.on('connection', (socket) => {
 
   var runAnalyzer = new CronJob(
     '*/3 * * * * *',
-    function () {
-      run();
-      io.emit('runupdate')
+    async function () {
+      var stats = await analyzeLog('./logs.txt');
+      io.emit('runupdate', stats)
     },
     null,
     true,
     'America/Chicago',
     io
   );
-
-  socket.on("fetchData", () => {
-    var stats = getter();
-    socket.emit('updateStats', stats);
-  });
 
     // Handle disconnection if needed
     socket.on('disconnect', () => {
