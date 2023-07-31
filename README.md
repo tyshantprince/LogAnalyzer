@@ -16,7 +16,7 @@ Start the development server on `http://localhost:3000`:
 npm run dev
 ```
 
-![alt text](https://github.com/tyshantprince/LogAnalyzer/public/test.png)
+![alt text](https://github.com/tyshantprince/LogAnalyzer/blob/main/public/test.png)
 
 
 
