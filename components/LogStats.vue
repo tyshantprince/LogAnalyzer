@@ -29,10 +29,11 @@ export default {
       // nuxt-socket-io opts: 
       name: 'main', // Use socket "home"
     })
-    
-    this.socket.onAny((event, ...args) => {
-      this.socket.emit('newclient');
-  });
+
+  this.socket.on('runupdate', () => {
+    console.log('fetchdata')
+      this.socket.emit('fetchData')
+    });
 
     this.socket.on('updateStats', (data) => {
       this.statistics = data;

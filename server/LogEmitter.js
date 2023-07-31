@@ -12,7 +12,7 @@ function generateRandomLog() {
   return `${timestamp} [${type}] ${message}\n`;
 }
 
- let runLogger = function emitLog() {
+ const runLogger = () => {
   fs.appendFile(logFilePath, generateRandomLog(), (err) => {
     if (err) {
       console.error('Error writing to log file:', err);

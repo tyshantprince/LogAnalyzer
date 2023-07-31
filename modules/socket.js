@@ -30,27 +30,27 @@ io.on('connection', (socket) => {
   );
 
   var runAnalyzer = new CronJob(
-    '*/5 * * * * *',
+    '*/3 * * * * *',
     function () {
       run();
+      io.emit('runupdate')
     },
-    socket.emit('runupdate'),
+    null,
     true,
     'America/Chicago',
     io
   );
 
-  socket.onAny((event, ...args) => {
+  socket.on("fetchData", () => {
     var stats = getter();
     socket.emit('updateStats', stats);
   });
 
-
-  // Handle disconnection if needed
-  socket.on('disconnect', () => {
-    console.log('A log analyzer disconnected');
+    // Handle disconnection if needed
+    socket.on('disconnect', () => {
+      console.log('A log analyzer disconnected');
+    });
   });
-});
 
 // Start the server on port 3001
 const port = 3001;
