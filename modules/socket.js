@@ -20,7 +20,7 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
 
   var generateLogs = new CronJob(
-    '* * * * * *',
+    '*/3 * * * * *',
     function () {
       runLogger();
     },
@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
   );
 
   var runAnalyzer = new CronJob(
-    '* * * * * *',
+    '*/5 * * * * *',
     function () {
       run();
     },
