@@ -35,7 +35,6 @@ export default {
   });
 
     this.socket.on('updateStats', (data) => {
-      console.log('new data')
       this.statistics = data;
     });
   },  

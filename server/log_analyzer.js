@@ -59,9 +59,7 @@ function processLogFile() {
     processLogLine(line);
   });
 
-  // On completion of reading the log file, emit the initial statistics through WebSocket
   rl.on('close', () => {
-    console.log('new stats');
   });
 }
 

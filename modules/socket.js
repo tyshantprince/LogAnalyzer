@@ -23,7 +23,6 @@ io.on('connection', (socket) => {
     '* * * * * *',
     function () {
       runLogger();
-      console.log('a new log was generated')
     },
     null,
     true,
@@ -34,7 +33,6 @@ io.on('connection', (socket) => {
     '* * * * * *',
     function () {
       run();
-      console.log('stats updated')
     },
     socket.emit('runupdate'),
     true,
@@ -45,7 +43,6 @@ io.on('connection', (socket) => {
   socket.onAny((event, ...args) => {
     var stats = getter();
     socket.emit('updateStats', stats);
-    console.log('new stats', stats);
   });
 
 
