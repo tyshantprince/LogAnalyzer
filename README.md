@@ -16,7 +16,15 @@ Start the development server on `http://localhost:3000`:
 npm run dev
 ```
 
+## Roadmap
+
+- Message Queue between log analyzer and app
+- sqllite to persist stats
+- Front-End Styling
+
 ![alt text](https://github.com/tyshantprince/LogAnalyzer/blob/main/public/test.png)
+
+
 
 
 
