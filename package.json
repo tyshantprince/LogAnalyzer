@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "cron": "^2.4.0",
     "faker": "^5.5.3",
+    "jsonwebtoken": "^9.0.1",
     "nuxt-socket-io": "^3.0.10",
     "nuxt3-socket.io": "^0.2.0",
     "socket.io": "^4.7.1",
