@@ -22,7 +22,6 @@ npm run dev
 - sqllite to persist stats
 - Front-End Styling
 
-![alt text](https://github.com/tyshantprince/LogAnalyzer/blob/main/public/test.png)
 
 
 
