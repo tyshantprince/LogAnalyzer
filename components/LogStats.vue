@@ -3,7 +3,7 @@
     <h2>Real-Time Log Stats</h2>
 
     <div v-if="statistics">
-       <p>Total Records: {{ statistics.records }}</p>
+      <p>Total Records: {{ statistics.records }}</p>
       <p v-for="(count, type) in statistics.types" :key="type">
         {{ type }}: {{ count }}
       </p>
@@ -15,26 +15,31 @@
   </div>
 </template>
   
-<script> 
+<script>
+
+import { io } from 'socket.io-client'
+import { isUnauthorizedError } from '@thream/socketio-jwt/build/UnauthorizedError.js'
+
 
 export default {
   data() {
     return {
       statistics: null,
       error: null,
+
     };
   },
-   mounted() {
-    this.socket = this.$nuxtSocket({
-      // nuxt-socket-io opts: 
-      name: 'main', // Use socket "home"
+  mounted() {
+
+    this.socket = io('http://localhost:3001', {
     })
 
-  this.socket.on('runupdate', (data) => {
-    this.statistics = data;
+    this.socket.on('runupdate', (data) => {
+      this.statistics = data;
     });
 
-  },  
+
+  },
   methods: {
   }
 }
