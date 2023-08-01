@@ -14,7 +14,7 @@ async function analyzeLog(filePath) {
       const [timestamp, messageType, ...messageArray] = line.split(' ');
       const wordCount = messageArray.length;
       const message = messageArray.join(' ');
-      const processingSpeed = (Date.now() - startTime) / 60000
+      const processingSpeed = (Date.now() - startTime) * 1000 * 60;
       return { timestamp, messageType, processingSpeed, wordCount, message };
     });
 
