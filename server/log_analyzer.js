@@ -14,8 +14,7 @@ async function analyzeLog(filePath) {
       const [timestamp, messageType, ...messageArray] = line.split(' ');
       const wordCount = messageArray.length;
       const message = messageArray.join(' ');
-      const processingSpeed = (Date.now() - startTime) * 1000 * 60;
-      return { timestamp, messageType, processingSpeed, wordCount, message };
+      return { timestamp, messageType, wordCount, message };
     });
 
     // Step 2: Calculate statistics
@@ -33,8 +32,17 @@ async function analyzeLog(filePath) {
     });
 
     // Calculate the average processing speed per minute
-    const totalProcessingSpeed = logRecords.reduce((sum, record) => sum + record.processingSpeed, 0);
-    const avgProcessingSpeed = totalProcessingSpeed / records;
+    let totalProcessingTime = 0;
+    for (let i = 0; i < logRecords.length; i++) {
+      // Simulate processing each log record
+      // Replace the setTimeout with your actual processing logic
+      var simTime = logRecords[i].wordCount * 100
+      const processingTime = simTime; // Replace with the actual time taken to process this record in milliseconds
+      totalProcessingTime += processingTime;
+    }
+
+    const avgProcessingSpeed = (records / (totalProcessingTime / 60000)).toFixed(2);
+
 
     // Find the record with the most words
     const maxWords = logRecords.reduce((prevRecord, currentRecord) => {
