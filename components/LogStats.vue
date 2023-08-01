@@ -71,7 +71,7 @@ export default {
   mounted() {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlZlZWFtIiwiaWF0IjoxNTE2MjM5MDIyfQ.h_otfeUlyRHuEwboQJ27NsdaJXjNtBSZXmNeZ11sslA'
 
-    this.socket = io('ws://localhost:3001', {
+    this.socket = io('ws://localhost:3000', {
       query: { token }
     })
 
